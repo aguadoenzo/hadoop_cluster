@@ -2,8 +2,8 @@
 
 ### Getting started
 ```sh
-git clone [repo here]
-cd [repo here]
+git clone git@github.com:aguadoenzo/hadoop_cluster.git
+cd hadoop_cluster
 ./build_containers.sh
 ./go_master.sh
 ```
