@@ -20,6 +20,7 @@ docker run -itd \
        --net=hadoop-network \
        -p 50070:50070 \
        -p 8088:8088 \
+       -p 9000:9000 \
        --name hadoop-master \
        --hostname hadoop-master \
        aguadoe/hadoop &> /dev/null
@@ -27,7 +28,7 @@ echo -e "DONE${RESET}"
 
 
 # Start slave nodes
-NODES=6 # Number of total nodes (1 master, N - 1 slaves)
+NODES=3 # Number of total nodes (1 master, N - 1 slaves)
 i=1
 while [ $i -lt $NODES ]
 do

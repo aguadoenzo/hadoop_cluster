@@ -10,7 +10,8 @@ ENV PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 COPY ./config /tmp
 
 RUN mv /tmp/core-site.xml $HADOOP_HOME/etc/hadoop/ &&\
-    mv /tmp/hdfs-site.xml $HADOOP_HOME/etc/hadoop/
+    mv /tmp/hdfs-site.xml $HADOOP_HOME/etc/hadoop/ &&\
+    mv /tmp/yarn-site.xml $HADOOP_HOME/etc/hadoop/
 
 
 # Starting application
