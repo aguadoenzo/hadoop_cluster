@@ -6,7 +6,7 @@ YELLOW='\033[1;33m'
 RESET='\033[0m'
 
 echo -ne "${YELLOW}Pulling image from local registry ..."
-docker pull --insecure-registry $HOST_IP:5000/hadoop:latest &> /dev/null
+docker pull --insecure-registry localhost:5000/hadoop:latest &> /dev/null
 echo -e " DONE${RESET}"
 
 echo -ne "${YELLOW}Starting ${N} slaves (datanode) ..."
@@ -17,5 +17,5 @@ docker service create \
        --replicas=${N} \
        --hostname="" \
        --tty \
-       $HOST_IP:5000/hadoop:latest
+       localhost:5000/hadoop:latest
 echo -e " DONE${RESET}"
