@@ -16,6 +16,8 @@ hostname -i | awk '{print $1}'
 echo -ne "	./swarm_join.sh"
 echo -e "\n${RESET}"
 
+export HOST_IP=$(hostname -i | awk '{print $1}')
+
 
 # We need to run a private registry because Swarm mode doesn't share local
 # images with docker daemon, and always try to pull images from a registry.
@@ -25,11 +27,11 @@ echo -e " DONE${RESET}"
 
 # Build image
 echo -ne "${YELLOW}Building image ..."
-docker build --tag=192.168.61.132:5000/hadoop . &> /dev/null
+docker build --tag=$HOST_IP:5000/hadoop . &> /dev/null
 echo -e " DONE${RESET}"
 
 echo -ne "${YELLOW}Pushing image to local registry ..."
-docker push 192.168.61.132:5000/hadoop:latest &> /dev/null
+docker push $HOST_IP:5000/hadoop:latest &> /dev/null
 echo -e " DONE${RESET}"
 
 # Create network
@@ -46,6 +48,6 @@ docker service create \
        --tty \
        --replicas=1 \
        -p 8088:8088 \
-       192.168.61.132:5000/hadoop:latest 
+       $HOST_IP:5000/hadoop:latest 
 echo -e " DONE${RESET}"
 
