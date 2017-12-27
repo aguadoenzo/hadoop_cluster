@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-N=4
-
 YELLOW='\033[1;33m'
 RESET='\033[0m'
 
@@ -9,14 +7,13 @@ echo -ne "${YELLOW}Init swarm mode ..."
 docker swarm init &> /dev/null
 echo -e " DONE${RESET}"
 
-echo -ne "${YELLOW}Run the following command on slave nodes :${RESET}\n\n	export SWARM_TOKEN="
-docker swarm join-token worker --quiet
-echo -ne "	export HOST_IP="
-hostname -i | awk '{print $1}'
-echo -ne "	./swarm_join.sh"
-echo -e "\n${RESET}"
-
+export SWARM_TOKEN=$(docker swarm join-token worker --quiet)
 export HOST_IP=$(hostname -i | awk '{print $1}')
+
+echo -e "${YELLOW}Run the following command on slave nodes :${RESET}\n"
+echo -e "	export SWARM_TOKEN=${SWARM_TOKEN}"
+echo -e "	export HOST_IP=${HOST_IP}"
+echo -e "	./swarm_join.sh\n"
 
 
 # We need to run a private registry because Swarm mode doesn't share local

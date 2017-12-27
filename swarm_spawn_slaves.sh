@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-N=4
+N=2
 
 YELLOW='\033[1;33m'
 RESET='\033[0m'
