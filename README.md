@@ -1,11 +1,25 @@
 # Hadoop cluster
 
+## Running in distributed
+```sh
+# On master machine
+./swarm_spawn_master.sh
+```
+
+```sh
+# On slave machine
+# You need to execute the commands output by master first
+./swarm_spawn_slaves.sh
+```
+
+
+## Running in local (pseudo distributed)
 ### Getting started
 ```sh
 git clone git@github.com:aguadoenzo/hadoop_cluster.git
 cd hadoop_cluster
-./build_containers.sh
-./go_master.sh
+./local_build_containers.sh
+./local_login_master.sh
 ```
 
 ### Useful commands
