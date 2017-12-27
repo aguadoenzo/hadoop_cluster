@@ -14,5 +14,6 @@ if [ -z "$HOST_IP" ]; then
     echo "Please export HOST_IP=..."; exit 1
 fi
 echo -ne "${YELLOW}Joining swarm ..."
+docker swarm leave &> /dev/null
 docker swarm join --token $SWARM_TOKEN $HOST_IP:2377
 echo -e " DONE${RESET}"

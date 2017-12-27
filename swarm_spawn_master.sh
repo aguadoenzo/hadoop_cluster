@@ -13,6 +13,7 @@ echo -ne "${YELLOW}Run the following command on slave nodes :${RESET}\n\n	export
 docker swarm join-token worker --quiet
 echo -ne "	export HOST_IP="
 hostname -i | awk '{print $1}'
+echo -ne "	./swarm_join.sh"
 echo -e "\n${RESET}"
 
 
