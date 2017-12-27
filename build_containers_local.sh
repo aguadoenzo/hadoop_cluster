@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
 
+
+####
+#
+# Used to run Hadoop in a pseudo distributed fashion (multiple nodes in a single machine)
+#
+###
+
+
+
 YELLOW='\033[1;33m'
 RESET='\033[0m'
 
 # Build image
 echo -ne "${YELLOW}Building image ..."
-docker build --tag=aguadoe/hadoop . &> /dev/null
+docker build --tag=localhost:5000/hadoop . &> /dev/null
 echo -e " DONE${RESET}"
 
 # Create network
@@ -23,7 +32,7 @@ docker run -itd \
        -p 9000:9000 \
        --name hadoop-master \
        --hostname hadoop-master \
-       aguadoe/hadoop &> /dev/null
+       localhost:5000/hadoop &> /dev/null
 echo -e "DONE${RESET}"
 
 
@@ -36,10 +45,10 @@ do
     echo -ne "${YELLOW}Starting datanode ${i} (slave) ..." 
     docker run -itd \
 	   --net=hadoop-network \
-	   --name hadoop-slave$i \
-	   --hostname hadoop-slave$i \
-	   aguadoe/hadoop &> /dev/null
+	   localhost:5000/hadoop &> /dev/null
     echo -e "DONE${RESET}" 
     let "i++"
+    #    	   --name hadoop-slave$i \
+	#		   --hostname hadoop-slave$i \
 done 
 
