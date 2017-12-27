@@ -13,17 +13,12 @@ fi
 if [ -z "$HOST_IP" ]; then
     echo "Please export HOST_IP=..."; exit 1
 fi
-echo -ne "${YELLOW}Manager token is :${RESET}"
+echo -ne "${YELLOW}Joining swarm ..."
 docker swarm join --token $SWARM_TOKEN $HOST_IP:2377
-echo -n "${YELLOW}. Write it somewhere, you'll need it to add slaves to the cluster${RESET}"
-
-# Build image
-echo -ne "${YELLOW}Building image ..."
-docker build --tag=$HOST_IP:5000/hadoop . &> /dev/null
 echo -e " DONE${RESET}"
 
-echo -ne "${YELLOW}Pushing image to local registry ..."
-docker pull --insecure-registry 192.168.61.132:5000/hadoop:latest &> /dev/null
+echo -ne "${YELLOW}Pulling image from local registry ..."
+docker pull --insecure-registry $HOST_IP:5000/hadoop:latest &> /dev/null
 echo -e " DONE${RESET}"
 
 
