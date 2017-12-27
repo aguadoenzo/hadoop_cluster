@@ -9,9 +9,12 @@ echo -ne "${YELLOW}Init swarm mode ..."
 docker swarm init &> /dev/null
 echo -e " DONE${RESET}"
 
-echo -ne "${YELLOW}. run the following command on slave nodes :\n\n	export SWARM_TOKEN=${RESET}"
+echo -ne "${YELLOW}Run the following command on slave nodes :${RESET}\n\n	export SWARM_TOKEN="
 docker swarm join-token worker --quiet
+echo -ne "	export HOST_IP="
+hostname -i | awk '{print $1}'
 echo -e "\n${RESET}"
+
 
 # We need to run a private registry because Swarm mode doesn't share local
 # images with docker daemon, and always try to pull images from a registry.
