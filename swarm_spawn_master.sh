@@ -3,12 +3,19 @@
 YELLOW='\033[1;33m'
 RESET='\033[0m'
 
+
+## TODO: try to find a way to automate manager IP discovery
+if [ -z "$1" ]; then
+    echo "Please specify master node IP address"; exit 1
+fi
+
+
 echo -ne "${YELLOW}Init swarm mode ..."
 docker swarm init &> /dev/null
 echo -e " DONE${RESET}"
 
 export SWARM_TOKEN=$(docker swarm join-token worker --quiet)
-export HOST_IP=$(hostname -i | awk '{print $1}')
+export HOST_IP=$1
 
 echo -e "${YELLOW}Run the following command on slave nodes :${RESET}\n"
 echo -e "	export SWARM_TOKEN=${SWARM_TOKEN}"
