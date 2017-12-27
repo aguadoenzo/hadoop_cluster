@@ -45,13 +45,3 @@ docker service create \
        192.168.61.132:5000/hadoop:latest 
 echo -e " DONE${RESET}"
 
-echo -ne "${YELLOW}Starting ${N} slaves (datanode) ..."
-docker service rm hadoop-slaves &> /dev/null
-docker service create \
-       --network=hadoop-swarm \
-       --name=hadoop-slaves \
-       --replicas=${N} \
-       --hostname="" \
-       --tty \
-       192.168.61.132:5000/hadoop:latest
-echo -e " DONE${RESET}"
