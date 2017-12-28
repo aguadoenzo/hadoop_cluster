@@ -14,7 +14,7 @@ RESET='\033[0m'
 
 # Build image
 echo -ne "${YELLOW}Building image ..."
-docker build --tag=localhost:5000/hadoop . &> /dev/null
+docker build --tag=$HOST_IP:5000/hadoop . &> /dev/null
 echo -e " DONE${RESET}"
 
 # Create network
@@ -32,7 +32,7 @@ docker run -itd \
        -p 9000:9000 \
        --name hadoop-master \
        --hostname hadoop-master \
-       localhost:5000/hadoop &> /dev/null
+       $HOST_IP:5000/hadoop &> /dev/null
 echo -e "DONE${RESET}"
 
 
@@ -43,9 +43,9 @@ while [ $i -lt $NODES ]
 do
     docker rm -f hadoop-slave$i &> /dev/null
     echo -ne "${YELLOW}Starting datanode ${i} (slave) ..." 
-    docker run -itd \
-	   --net=hadoop-network \
-	   localhost:5000/hadoop &> /dev/null
+#    docker run -itd \
+#	   --net=hadoop-network \
+#	   localhost:5000/hadoop &> /dev/null
     echo -e "DONE${RESET}" 
     let "i++"
     #    	   --name hadoop-slave$i \

@@ -52,6 +52,8 @@ docker service create \
        --tty \
        --replicas=1 \
        -p 8088:8088 \
+       -p 9000:9000 \
+       -p 50070:50070 \
        $HOST_IP:5000/hadoop:latest 
 echo -e " DONE${RESET}"
 
