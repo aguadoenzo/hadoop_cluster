@@ -1,0 +1,42 @@
+version: '3.1'
+
+networks:
+  hadoop-swarm:
+    driver: overlay
+
+services:
+
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - hadoop-swarm
+
+  hadoop-master:
+    image: "${HOST_IP}:5000/hadoop" # We need to host a private repository
+    tty: true
+    deploy:
+      replicas: 1
+    networks:
+      - hadoop-swarm
+    hostname: hadoop-master
+#    name: hadoop-master
+    
+    ports:
+      - "8088:8088"
+      - "50070:50070"
+      - "9000:9000"
+
+  hadoop-slaves:
+    image: "${HOST_IP}:5000/hadoop"
+    tty: true # Allows bash to execute, thus keeping container up & running
+    networks:
+      - hadoop-swarm
