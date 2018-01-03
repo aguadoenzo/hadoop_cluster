@@ -40,3 +40,13 @@ services:
     tty: true # Allows bash to execute, thus keeping container up & running
     networks:
       - hadoop-swarm
+
+  spark-master:
+    image: p7hb/docker-spark:2.2.0
+    networks:
+      - hadoop-swarm
+    hostname: spark
+    ports:
+      - 8081:8081
+      - 8080:8080
+      - 4040:4040
