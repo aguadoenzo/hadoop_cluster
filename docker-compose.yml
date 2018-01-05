@@ -6,19 +6,21 @@ networks:
 
 services:
 
-  registry:
-    image: registry:2
-    ports:
-      - "5000:5000"
-
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - "8080:8080"
+      - "8082:8080"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks:
       - hadoop-swarm
+    depends_on:
+      - hadoop-master
+
 
   hadoop-master:
     image: "${HOST_IP}:5000/hadoop" # We need to host a private repository
@@ -28,25 +30,39 @@ services:
     networks:
       - hadoop-swarm
     hostname: hadoop-master
-#    name: hadoop-master
-    
     ports:
       - "8088:8088"
       - "50070:50070"
       - "9000:9000"
+
 
   hadoop-slaves:
     image: "${HOST_IP}:5000/hadoop"
     tty: true # Allows bash to execute, thus keeping container up & running
     networks:
       - hadoop-swarm
+    depends_on:
+      - hadoop-master
 
-  spark-master:
-    image: p7hb/docker-spark:2.2.0
-    networks:
-      - hadoop-swarm
-    hostname: spark
+
+##  spark-master:
+#    image: p7hb/docker-spark:2.2.0
+#    networks:
+#      - hadoop-swarm
+#    hostname: spark
+#    ports:
+#      - 8081:8081
+#      - 8080:8080
+#      - 4040:4040
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
     ports:
-      - 8081:8081
-      - 8080:8080
-      - 4040:4040
+      - 8083:8080
