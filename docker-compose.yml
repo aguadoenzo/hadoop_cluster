@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.3'
 
 networks:
   hadoop-swarm:
@@ -29,7 +29,6 @@ services:
       replicas: 1
     networks:
       - hadoop-swarm
-    hostname: hadoop-master
     ports:
       - "8088:8088"
       - "50070:50070"
@@ -39,21 +38,12 @@ services:
   hadoop-slaves:
     image: "${HOST_IP}:5000/hadoop"
     tty: true # Allows bash to execute, thus keeping container up & running
+    deploy:
+      replicas: 3
     networks:
       - hadoop-swarm
     depends_on:
       - hadoop-master
-
-
-##  spark-master:
-#    image: p7hb/docker-spark:2.2.0
-#    networks:
-#      - hadoop-swarm
-#    hostname: spark
-#    ports:
-#      - 8081:8081
-#      - 8080:8080
-#      - 4040:4040
 
   db:
     image: mysql:8.0
@@ -66,3 +56,5 @@ services:
     restart: always
     ports:
       - 8083:8080
+    depends_on:
+      - db
