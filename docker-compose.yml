@@ -9,7 +9,7 @@ services:
   visualizer:
     image: dockersamples/visualizer:stable
     ports:
-      - "8082:8080"
+      - "8080:8080"
     deploy:
       placement:
         constraints:
@@ -44,17 +44,3 @@ services:
       - hadoop-swarm
     depends_on:
       - hadoop-master
-
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8083:8080
-    depends_on:
-      - db
