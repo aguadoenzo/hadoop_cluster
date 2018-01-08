@@ -1,45 +1,46 @@
 # Hadoop cluster
 
-## Running in distributed
+Made for an assignement, not fit for anyting remotely serious.
+
+## Getting started
+
+You need at least one Docker Swarm manager
 ```sh
-# On master machine
-./swarm_spawn_master.sh
+# On manager
+docker swarm init
 ```
+This will print a command that you'll need to run on all other nodes.
+
+
+## Starting the cluster
+
+We use Docker Deploy to start and manage the services.
+```sh
+docker stack deploy --compose-file=docker-compose.yml [name of the cluster]
+```
+
+## Useful stuff
+
+#### Visualize cluster health
+You can access a visualizer by using a brower to go to `[IP]:8080` where `IP` is a node in the cluster (any node should work).
+
+#### Query logs of a service (all container of one kind)
+To get an aggregated log of all the containers of a specific service, run
+```sh
+docker service logs [service name]
+```
+Docker service names can be found with
+```sh
+docker service ls
+```
+
+#### Enter in a node to issue commands
+Executing `docker ps` will list all containers running on one node.
 
 ```sh
-# On slave machine
-# You need to execute the commands output by master first
-./swarm_spawn_slaves.sh
+docker exec -it [container name] bash
 ```
 
-
-## Running in local (pseudo distributed)
-### Getting started
-```sh
-git clone git@github.com:aguadoenzo/hadoop_cluster.git
-cd hadoop_cluster
-./local_build_containers.sh
-./local_login_master.sh
-```
-
-### Useful commands
-```sh
-hdfs dfsadmin -report # List live nodes and their health
-
-hdfs dfs -ls  # List files in the HDFS
-hdfs dfs -cat path/to/file # Cat a file
-```
-
-## MapReduce example - word count
-
-Find a lot of text to begin with. Hadoop is slow to wake up, so small datasets will not show good performances.
-
-```
-mkdir input/
-# Add lots of files to input/
-hdfs dfs -mkdir -p input	# Create input directory on HDFS
-hdfs dfs -put input/* input	# Copy files in it
-hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.0.jar wordcount input output
-hdfs dfs -cat output/part-r-00000
-
-```
+### Known issues
+ - Running the cluster on non linux hosts may cause issues with docker DNS (VIP)
+ - Restarting the master causes all the nodes to fail.
