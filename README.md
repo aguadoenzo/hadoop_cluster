@@ -19,6 +19,17 @@ We use Docker Deploy to start and manage the services.
 docker stack deploy --compose-file=docker-compose.yml [name of the cluster]
 ```
 
+## Stopping a cluster
+
+```sh
+docker stack rm [name of the cluster]
+```
+
+## Scaling a cluster
+```sh
+docker service scale [service name]=[number of desired replicas]
+```
+
 ## Useful stuff
 
 #### Visualize cluster health
