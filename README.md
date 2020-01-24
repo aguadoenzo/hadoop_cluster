@@ -1,6 +1,6 @@
 # Hadoop cluster
 
-Made for an assignement, not fit for anyting remotely serious.
+Made for an assignement, not fit for anything remotely serious.
 
 ## Getting started
 
